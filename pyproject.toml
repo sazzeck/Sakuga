@@ -1,0 +1,24 @@
+[tool.poetry]
+name = "sakuga"
+version = "0.1.0"
+description = ""
+authors = ["Shenderrring"]
+
+[tool.poetry.dependencies]
+python = ">=3.9.0,<3.10"
+python-dotenv = "^0.19.2"
+hikari = {extras = ["speedups"], version = "^2.0.0-alpha.108"}
+hikari-lightbulb = "2.2.1"
+APScheduler = "^3.8.1"
+uvloop = "^0.16.0"
+psutil = "^5.8.0"
+pygount = "^1.2.4"
+hikari-miru = "^1.1.1"
+
+[tool.poetry.dev-dependencies]
+black = "^21.10b0"
+flake8 = "^3.9.2"
+
+[build-system]
+requires = ["poetry-core>=1.0.0"]
+build-backend = "poetry.core.masonry.api"
