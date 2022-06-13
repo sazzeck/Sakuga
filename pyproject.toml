@@ -2,7 +2,7 @@
 name = "sakuga"
 version = "0.1.0"
 description = ""
-authors = ["Shenderrring"]
+authors = ["sazzeck"]
 
 [tool.poetry.dependencies]
 python = ">=3.9.0,<3.10"
