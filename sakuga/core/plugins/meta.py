@@ -26,7 +26,7 @@ plugin = plugins.Plugin("Meta", description="Utility commands")
 @plugin.command
 @decorators.command("about", "View information about Sakuga", ephemeral=True)
 @decorators.implements(commands.SlashCommand)
-async def cmd_bot_info(ctx: context.base.Context) -> None:    # Bot Information command
+async def cmd_bot_info(ctx: context.base.Context) -> None:
     buttons = (
         ctx.app.rest.build_action_row()
         .add_button(hikari.ButtonStyle.LINK, Config.INVITE_URL)
@@ -44,7 +44,7 @@ async def cmd_bot_info(ctx: context.base.Context) -> None:    # Bot Information 
     mem_of_total = proc.memory_percent()
     await ctx.respond(
         hikari.Embed(
-            title=":bookmark_tabs: Bot Information",
+            title="Bot Information",
             colour=Config.EMBED_COLOR,
         )
         .add_field(
@@ -90,14 +90,14 @@ async def cmd_bot_info(ctx: context.base.Context) -> None:    # Bot Information 
 @decorators.set_help("Group of commands for getting basic information about the server and what is connected with it")
 @decorators.command("get_info", "Info command group", ephemeral=True)
 @decorators.implements(commands.SlashCommandGroup)
-async def get_info_group(ctx: context.base.Context) -> None:    # Group of commands to get information
+async def get_info_group(ctx: context.base.Context) -> None:
     pass
 
 
 @get_info_group.child
 @decorators.command("guild", "Get information about the guild", ephemeral=True)
 @decorators.implements(commands.SlashSubCommand)
-async def cmd_guild_info(ctx: context.base.Context) -> None:    # Guild Information command
+async def cmd_guild_info(ctx: context.base.Context) -> None:
     assert ctx.guild_id is not None
     guild = ctx.app.cache.get_available_guild(ctx.guild_id)
     assert guild is not None
@@ -146,7 +146,7 @@ async def cmd_guild_info(ctx: context.base.Context) -> None:    # Guild Informat
 
     await ctx.respond(
         hikari.Embed(
-            title=f":busts_in_silhouette: {guild.name}",
+            title=f"{guild.name}",
             description="\n".join(
                 [
                     f"• **ID:** {guild.id}",
@@ -205,7 +205,7 @@ Monetization - {"✓" if "MONETIZATION_ENABLED" in guild.features else "✗"}
 @decorators.option("role", "select a role", hikari.Role)
 @decorators.command("role", "Get information about the role", ephemeral=True)
 @decorators.implements(commands.SlashSubCommand)
-async def cmd_role_info(ctx: context.base.Context) -> None:    # Role Information command
+async def cmd_role_info(ctx: context.base.Context) -> None:
     assert ctx.guild_id and ctx.options.role is not None
     guild = ctx.app.cache.get_available_guild(ctx.guild_id)
     assert guild is not None
@@ -215,7 +215,7 @@ async def cmd_role_info(ctx: context.base.Context) -> None:    # Role Informatio
 
     await ctx.respond(
         hikari.Embed(
-            title=":label: Role information",
+            title="Role information",
             description="\n".join(
                 [
                     f"• **Name:** `{role.name}`",
@@ -241,7 +241,7 @@ Premium - {'✓' if role.is_premium_subscriber_role else '✗'}```""",
 @decorators.option("target", "select a user", hikari.User)
 @decorators.command("user", "Get information about the user", ephemeral=True)
 @decorators.implements(commands.SlashSubCommand)
-async def cmd_user_info(ctx: context.base.Context) -> None:    # User Information command
+async def cmd_user_info(ctx: context.base.Context) -> None:
     assert ctx.guild_id and ctx.options.target is not None
     member = ctx.app.cache.get_member(ctx.guild_id, ctx.options.target)
     assert member is not None
@@ -275,7 +275,7 @@ async def cmd_user_info(ctx: context.base.Context) -> None:    # User Informatio
 
     await ctx.respond(
         hikari.Embed(
-            title=":bust_in_silhouette: User information",
+            title="User information",
             description="\n".join(
                 [
                     f"• **Username:** `{member}`",
@@ -334,7 +334,7 @@ def channel_type(channel: hikari.GuildChannel) -> str:
 @decorators.option("channel", "select a channel", hikari.GuildChannel)
 @decorators.command("channel", "Get information about the channel", ephemeral=True)
 @decorators.implements(commands.SlashSubCommand)
-async def cmd_channel_info(ctx: context.base.Context) -> None:    # Channel Information command
+async def cmd_channel_info(ctx: context.base.Context) -> None:
     assert ctx.guild_id and ctx.options.channel is not None
     guild = ctx.app.cache.get_available_guild(ctx.guild_id)
     assert guild is not None
@@ -342,24 +342,49 @@ async def cmd_channel_info(ctx: context.base.Context) -> None:    # Channel Info
     channel = guild.get_channel(ctx.options.channel.id)
 
     if isinstance(channel, hikari.GuildCategory):
-        ...
+        emb = hikari.Embed(
+            title="Channel Information",
+            description=f"""**Type**: `{channel_type(channel)}`
+""",
+            colour=Config.EMBED_COLOR,
+        ).add_field("Created at", f"<t:{int(channel.created_at.timestamp())}:R>")
     elif isinstance(channel, hikari.GuildNewsChannel):
-        ...
+        emb = hikari.Embed(
+            title="Channel Information",
+            description=f"""
+""",
+            colour=Config.EMBED_COLOR,
+        ).add_field("Created at", f"<t:{int(channel.created_at.timestamp())}:R>")
     elif isinstance(channel, hikari.GuildStageChannel):
-        ...
+        emb = hikari.Embed(
+            title="Channel Information",
+            description=f"""
+""",
+            colour=Config.EMBED_COLOR,
+        ).add_field("Created at", f"<t:{int(channel.created_at.timestamp())}:R>")
     elif isinstance(channel, hikari.GuildVoiceChannel):
-        ...
+        emb = hikari.Embed(
+            title="Channel Information",
+            description=f"""
+""",
+            colour=Config.EMBED_COLOR,
+        ).add_field("Created at", f"<t:{int(channel.created_at.timestamp())}:R>")
     elif isinstance(channel, hikari.GuildTextChannel):
-        ...
+        emb = hikari.Embed(
+            title="Channel Information",
+            description=f"""
+""",
+            colour=Config.EMBED_COLOR,
+        ).add_field("Created at", f"<t:{int(channel.created_at.timestamp())}:R>")
 
-    await ctx.respond()
+    await ctx.respond(embed=emb)
 
 
 @plugin.command
 @decorators.option("target", "select a user", hikari.User)
 @decorators.command("avatar", "Get user avatar", ephemeral=True)
 @decorators.implements(commands.SlashCommand)
-async def cmd_user_avatar(ctx: context.base.Context) -> None:    # View avatar user command
+async def cmd_user_avatar(ctx: context.base.Context) -> None:
     assert ctx.guild_id and ctx.options.target is not None
     member = ctx.app.cache.get_member(ctx.guild_id, ctx.options.target)
     assert member is not None

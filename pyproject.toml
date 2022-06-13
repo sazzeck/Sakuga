@@ -8,7 +8,7 @@ authors = ["Shenderrring"]
 python = ">=3.9.0,<3.10"
 python-dotenv = "^0.19.2"
 hikari = {extras = ["speedups"], version = "^2.0.0-alpha.108"}
-hikari-lightbulb = "2.2.1"
+hikari-lightbulb = "2.2.2"
 APScheduler = "^3.8.1"
 uvloop = "^0.16.0"
 psutil = "^5.8.0"
