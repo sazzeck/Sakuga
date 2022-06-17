@@ -53,6 +53,7 @@ class Bot(lightbulb.BotApp):
     async def on_stopping(self, _: events.StoppingEvent) -> None:
         self.scheduler.shutdown()
         await self.session.close()
+
         self.log.warning("Bot shutdown.")
 
     async def on_error(self, event: lightbulb.CommandErrorEvent) -> None:
