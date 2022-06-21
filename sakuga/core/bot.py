@@ -31,16 +31,6 @@ class Bot(lightbulb.BotApp):
             cache_settings=CACHE,
         )
 
-        self.redis_cache = sake.RedisCache(
-            app=self,
-            address=Config.REDIS_ADDRESS,
-            password=Config.REDIS_PASSWORD,
-            event_manager=self.event_manager,
-            event_managed=True,
-            dumps=msgpack.dumps,
-            loads=msgpack.loads,
-        )
-
         subscriptions = {
             events.StartingEvent: self.on_starting,
             events.StartedEvent: self.on_started,
