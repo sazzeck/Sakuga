@@ -12,6 +12,10 @@ import lightbulb
 from sakuga.utils import Config
 from sakuga.utils.const import CACHE
 
+import sake
+
+import msgpack
+
 
 class Bot(lightbulb.BotApp):
     def __init__(self) -> None:
@@ -27,6 +31,16 @@ class Bot(lightbulb.BotApp):
             cache_settings=CACHE,
         )
 
+        self.redis_cache = sake.RedisCache(
+            app=self,
+            address=Config.REDIS_ADDRESS,
+            password=Config.REDIS_PASSWORD,
+            event_manager=self.event_manager,
+            event_managed=True,
+            dumps=msgpack.dumps,
+            loads=msgpack.loads,
+        )
+
         subscriptions = {
             events.StartingEvent: self.on_starting,
             events.StartedEvent: self.on_started,
@@ -40,6 +54,7 @@ class Bot(lightbulb.BotApp):
         self.load_extensions_from("./sakuga/core/plugins")
         self.scheduler.start()
         self.session
+        await self.redis_cache.open()
 
     async def on_started(self, _: events.StartedEvent) -> None:
         ping = self.heartbeat_latency * 1000
